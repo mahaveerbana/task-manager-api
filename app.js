@@ -16,8 +16,8 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS)
 
 // Passport configuration
-require('./config/passport')(passport);
-app.use(passport.initialize()); // Initialize passport for authentication
+// require('./config/passport')(passport);
+// app.use(passport.initialize()); 
 
 // Sequelize model sync
 sequelize.sync({ force: false })
