@@ -38,26 +38,24 @@ exports.getTasks = async (req, res) => {
     const tasks = await Task.findAll({ where: { UserId: req.user.id } });
 
     // If no tasks are found, return a 404 response
-    if (!tasks || tasks.length === 0) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'No tasks found',
-        errorMessage: null,
-        data: null
-      });
-    }
+    // if (!tasks || tasks.length === 0) {
+    //   return res.status(404).json({
+    //     status: 'error',
+    //     message: 'No tasks found',
+    //     errorMessage: null,
+    //     data: null
+    //   });
+    // }
 
     res.json({
       status: 'success',
       message: 'Tasks fetched successfully',
-      errorMessage: null,
-      data: tasks
+      data: tasks || []
     });
   } catch (error) {
     console.error(error);  // Log the error for debugging
     res.status(500).json({
       status: 'error',
-      message: 'Fetching tasks failed. Please try again later.',
       errorMessage: error.message,
       data: null
     });
@@ -71,7 +69,6 @@ exports.updateTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         status: 'error',
-        message: 'Task not found',
         errorMessage: 'Task with the provided ID not found',
         data: null
       });
@@ -83,14 +80,12 @@ exports.updateTask = async (req, res) => {
     res.json({
       status: 'success',
       message: 'Task updated successfully',
-      errorMessage: null,
       data: null
     });
   } catch (error) {
     console.error(error);  // Log the error for debugging
     res.status(500).json({
       status: 'error',
-      message: 'Updating task failed. Please try again later.',
       errorMessage: error.message,
       data: null
     });
@@ -104,7 +99,6 @@ exports.deleteTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         status: 'error',
-        message: 'Task not found',
         errorMessage: 'Task with the provided ID not found',
         data: null
       });
@@ -116,14 +110,12 @@ exports.deleteTask = async (req, res) => {
     res.json({
       status: 'success',
       message: 'Task deleted successfully',
-      errorMessage: null,
       data: null
     });
   } catch (error) {
     console.error(error);  // Log the error for debugging
     res.status(500).json({
       status: 'error',
-      message: 'Deleting task failed. Please try again later.',
       errorMessage: error.message,
       data: null
     });
