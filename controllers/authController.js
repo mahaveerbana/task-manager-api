@@ -1,6 +1,11 @@
-const User = require('../models/User'); // Your User model
+const User = require('../models/User'); 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { OAuth2Client } = require('google-auth-library');
+
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 exports.register = async (req, res) => {
   try {
@@ -80,32 +85,43 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.googleCallback = async (req, res) => {
+exports.googleLogin = async (req, res) => {
   try {
-    const { email, name, id } = req.user;
+    const { token } = req.body; 
 
+    // Verify Google token
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, sub: googleId } = payload;
+
+    // Check if the user already exists
     let user = await User.findOne({ where: { email } });
     if (!user) {
+      // Create a new user if they don't exist
       user = await User.create({
         email,
         name,
-        googleId: id, 
+        googleId,
       });
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24d' });
+    const jwtToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24d' });
 
     return res.status(200).json({
       status: 'SUCCESS',
       message: 'Login successful',
-      token
+      token: jwtToken,
     });
   } catch (err) {
     console.error(err);
     return res.status(500).json({
       status: 'FAILED',
-      errorMessage: 'Someting went wrong.'
+      errorMessage: 'Something went wrong.',
     });
   }
 };
