@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Debugger
+.vscode/
+
+# Coverage reports (from testing)
+coverage/
+
+# NPM package lock (optional, if you don't want to track package-lock.json)
+package-lock.json
+
+# Build directories (for transpiled code like TypeScript)
+dist/
+build/
+
+# Optional: ignore the test folder if it's used for local testing and shouldn't be versioned
+test/
+
+# Optional: add any other files/folders you don't want to track
