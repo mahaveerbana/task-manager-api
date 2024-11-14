@@ -9,7 +9,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, firstName, lastName } = req.body;
 
     // Check if the user already exists
     const userExists = await User.findOne({ where: { email } });
@@ -26,7 +26,8 @@ exports.register = async (req, res) => {
     // Create a new user
     const newUser = await User.create({
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      name: firstName ? firstName + " " + lastName : null
     });
 
     // Generate JWT token

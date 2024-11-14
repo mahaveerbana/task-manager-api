@@ -37,15 +37,7 @@ exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll({ where: { UserId: req.user.id } });
 
-    // If no tasks are found, return a 404 response
-    // if (!tasks || tasks.length === 0) {
-    //   return res.status(404).json({
-    //     status: 'error',
-    //     message: 'No tasks found',
-    //     errorMessage: null,
-    //     data: null
-    //   });
-    // }
+    
 
     res.json({
       status: 'success',

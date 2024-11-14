@@ -1,4 +1,3 @@
-// routes/taskRoutes.js
 const express = require('express');
 const { createTask, getTasks, updateTask, deleteTask } = require('../controllers/taskController');
 const authenticate = require('../middleware/authenticate');
